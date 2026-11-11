@@ -37,6 +37,8 @@ All members must use the same preprocessing configuration.
 | `environment.py` | Creates and preprocesses Q*bert |
 | `dqn.py` | Defines the CNN architecture |
 | `replay_buffer.py` | Stores and samples experiences |
+| `dqn_agent.py` | Epsilon schedule, action selection, Bellman update and target network sync |
+| `test_learning.py` | Tests the replay buffer and learning logic |
 | `train.py` | Trains the DQN agent |
 | `play.py` | Loads and demonstrates trained models |
 | `test_environment.py` | Tests the Atari environment |
@@ -58,6 +60,8 @@ All members must use the same preprocessing configuration.
 - `save_model()`
 - `load_model()`
 - `evaluate_agent()`
+- `update_target_network()`
+- `get_device()`
 
 ### Shared variables
 - `ENV_NAME`
@@ -98,10 +102,12 @@ Formative-3---DQN-Atari-Project/
 ├── environment.py
 ├── dqn.py
 ├── replay_buffer.py
+├── dqn_agent.py
 ├── train.py
 ├── play.py
 ├── test_environment.py
 ├── test_dqn.py
+├── test_learning.py
 ├── models/
 │   ├── member_1/
 │   ├── member_2/
