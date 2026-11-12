@@ -34,7 +34,7 @@ from replay_buffer import ReplayBuffer
 @dataclass
 class TrainConfig:
     experiment_id: str = "TASK3_EXP01"
-    member: str = "kalisa"
+    member: str = "ivan"
     learning_rate: float = 1e-4
     gamma: float = 0.99
     batch_size: int = 32

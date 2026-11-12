@@ -1,7 +1,7 @@
 """Watch a trained Q*bert DQN model play using greedy actions.
 
     uv run python play.py --model dqn_model.pth
-    uv run python play.py --model models/kalisa/TASK3_EXP01.pth --episodes 3
+    uv run python play.py --model models/ivan/TASK3_EXP01.pth --episodes 3
 """
 import argparse
 from pathlib import Path

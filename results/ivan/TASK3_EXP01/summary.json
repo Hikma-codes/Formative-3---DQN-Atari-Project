@@ -1,10 +1,10 @@
 {
   "experiment_id": "TASK3_EXP01",
-  "member": "kalisa",
+  "member": "ivan",
   "environment": "ALE/Qbert-v5",
   "config": {
     "experiment_id": "TASK3_EXP01",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.99,
     "batch_size": 32,
@@ -34,9 +34,9 @@
   "last_10_episode_mean_length": 352.1,
   "best_episode_reward": 1150.0,
   "elapsed_seconds": 2605.45,
-  "model_path": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\models\\kalisa\\TASK3_EXP01.pth",
-  "episode_log": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\results\\kalisa\\TASK3_EXP01\\episodes.csv",
-  "update_log": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\results\\kalisa\\TASK3_EXP01\\training_updates.csv",
-  "plot_path": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\plots\\kalisa\\TASK3_EXP01.png",
+  "model_path": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\models\\ivan\\TASK3_EXP01.pth",
+  "episode_log": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\results\\ivan\\TASK3_EXP01\\episodes.csv",
+  "update_log": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\results\\ivan\\TASK3_EXP01\\training_updates.csv",
+  "plot_path": "C:\\Users\\Kalivan\\Downloads\\Formative-3---DQN-Atari-Project-kalisa\\plots\\ivan\\TASK3_EXP01.png",
   "partial_episode_discarded_from_summary": true
 }
