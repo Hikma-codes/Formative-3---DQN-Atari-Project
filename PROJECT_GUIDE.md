@@ -111,12 +111,12 @@ Formative-3---DQN-Atari-Project/
 ├── models/
 │   ├── member_1/
 │   ├── member_2/
-│   ├── member_3/
+│   ├── task_3/
 │   └── member_4/
 ├── results/
 │   ├── member_1/
 │   ├── member_2/
-│   ├── member_3/
+│   ├── task_3/
 │   └── member_4/
 ├── plots/
 ├── docs/
@@ -134,7 +134,7 @@ Naming format:
 
 - `M1_EXP01` through `M1_EXP10`
 - `M2_EXP01` through `M2_EXP10`
-- `M3_EXP01` through `M3_EXP10`
+- `TASK3_EXP01` through `TASK3_EXP10`
 - `M4_EXP01` through `M4_EXP10`
 
 Example checkpoint:
@@ -147,7 +147,7 @@ Each experiment must record its hyperparameters, training budget, performance an
 
 - Member 1: Environment, preprocessing and CNN architecture.
 - Member 2: Replay buffer, epsilon-greedy, Bellman update, loss and target network.
-- Member 3: Training pipeline, integration, logging and checkpoint saving.
+- Task 3 (Kalisa): Training pipeline, integration, logging and checkpoint saving.
 - Member 4: Evaluation, gameplay demonstration, plots and documentation.
 
 All members must understand the overall DQN implementation and complete their own 10 experiments.
