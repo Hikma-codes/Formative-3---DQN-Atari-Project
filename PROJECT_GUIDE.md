@@ -147,7 +147,7 @@ Each experiment must record its hyperparameters, training budget, performance an
 
 - Member 1: Environment, preprocessing and CNN architecture.
 - Member 2: Replay buffer, epsilon-greedy, Bellman update, loss and target network.
-- Task 3 (Kalisa): Training pipeline, integration, logging and checkpoint saving.
+- Task 3 (Ivan): Training pipeline, integration, logging and checkpoint saving.
 - Member 4: Evaluation, gameplay demonstration, plots and documentation.
 
 All members must understand the overall DQN implementation and complete their own 10 experiments.

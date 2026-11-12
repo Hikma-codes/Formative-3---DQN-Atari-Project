@@ -1,7 +1,7 @@
 [
   {
     "experiment_id": "TASK3_EXP01",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.99,
     "batch_size": 32,
@@ -11,7 +11,7 @@
   },
   {
     "experiment_id": "TASK3_EXP02",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 5e-05,
     "gamma": 0.99,
     "batch_size": 32,
@@ -21,7 +21,7 @@
   },
   {
     "experiment_id": "TASK3_EXP03",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.00025,
     "gamma": 0.99,
     "batch_size": 32,
@@ -31,7 +31,7 @@
   },
   {
     "experiment_id": "TASK3_EXP04",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.95,
     "batch_size": 32,
@@ -41,7 +41,7 @@
   },
   {
     "experiment_id": "TASK3_EXP05",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.995,
     "batch_size": 32,
@@ -51,7 +51,7 @@
   },
   {
     "experiment_id": "TASK3_EXP06",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.99,
     "batch_size": 64,
@@ -61,7 +61,7 @@
   },
   {
     "experiment_id": "TASK3_EXP07",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.99,
     "batch_size": 16,
@@ -71,7 +71,7 @@
   },
   {
     "experiment_id": "TASK3_EXP08",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.99,
     "batch_size": 32,
@@ -81,7 +81,7 @@
   },
   {
     "experiment_id": "TASK3_EXP09",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.99,
     "batch_size": 32,
@@ -91,7 +91,7 @@
   },
   {
     "experiment_id": "TASK3_EXP10",
-    "member": "kalisa",
+    "member": "ivan",
     "learning_rate": 0.0001,
     "gamma": 0.99,
     "batch_size": 32,

@@ -6,7 +6,7 @@ This project trains a custom convolutional DQN agent to play Q*bert (`ALE/Qbert-
 
 - Task 1: Atari environment preprocessing and CNN (`environment.py`, `dqn.py`).
 - Task 2: Replay buffer and DQN updates (`replay_buffer.py`, `dqn_agent.py`).
-- **Task 3 — Kalisa:** Training pipeline (`train.py`), ten hyperparameter experiments (`kalisa_experiments.json`, `run_experiments.py`), model checkpoints, metrics and plots.
+- **Task 3 — Ivan:** Training pipeline (`train.py`), ten hyperparameter experiments (`ivan_experiments.json`, `run_experiments.py`), model checkpoints, metrics and plots.
 - Task 4: Greedy gameplay demonstration (`play.py`); integration copy included for testing with the same DQN architecture.
 
 Confirm the other group members' names and responsibilities with your team before final submission.
@@ -42,9 +42,9 @@ uv run python run_experiments.py --experiment TASK3_EXP01
 uv run python run_experiments.py --all
 ```
 
-For a quick pipeline test, see `KALISA_INSTRUCTIONS.md`. Training ten meaningful Atari experiments requires significant compute time; the configurations are **planned**, not measured results.
+For a quick pipeline test, see `INSTRUCTIONS.md`. Training ten meaningful Atari experiments requires significant compute time; the configurations are **planned**, not measured results.
 
-Each experiment writes `models/kalisa/TASK3_EXPxx.pth`, a CSV training log, a JSON summary, and `plots/kalisa/TASK3_EXPxx.png`. The table `KalisaHyperparameter_experiment_results.md` updates after successful runs; explain observations in your own words after reviewing the results.
+Each experiment writes `models/ivan/TASK3_EXPxx.pth`, a CSV training log, a JSON summary, and `plots/ivan/TASK3_EXPxx.png`. The table `IvanHyperparameter_experiment_results.md` updates after successful runs; explain observations in your own words after reviewing the results.
 
 ## Live gameplay
 
@@ -55,7 +55,7 @@ uv run python run_experiments.py --export-best TASK3_EXP01
 uv run python play.py --model dqn_model.pth --episodes 3
 ```
 
-To compare models without a display, use `uv run python play.py --model models/kalisa/TASK3_EXP01.pth --episodes 5 --no-render`. Greedy evaluation rewards are different from training-time epsilon-greedy rewards.
+To compare models without a display, use `uv run python play.py --model models/ivan/TASK3_EXP01.pth --episodes 5 --no-render`. Greedy evaluation rewards are different from training-time epsilon-greedy rewards.
 
 ## Submission status
 

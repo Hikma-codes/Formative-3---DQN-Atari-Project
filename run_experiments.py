@@ -14,9 +14,9 @@ from pathlib import Path
 from train import TrainConfig, run_training
 
 ROOT = Path(__file__).resolve().parent
-EXPERIMENTS = ROOT / "kalisa_experiments.json"
-RESULTS = ROOT / "results" / "kalisa"
-TABLE = ROOT / "KalisaHyperparameter_experiment_results.md"
+EXPERIMENTS = ROOT / "ivan_experiments.json"
+RESULTS = ROOT / "results" / "ivan"
+TABLE = ROOT / "IvanHyperparameter_experiment_results.md"
 
 
 def load_experiments():
@@ -37,7 +37,7 @@ def summary_for(exp_id):
 
 def write_table(specs):
     headers = ["Experiment", "Learning rate", "Gamma", "Batch size", "Epsilon start", "Epsilon end", "Epsilon decay (steps)", "Observed behaviour"]
-    lines = ["# Kalisa — Task 3: Individual Hyperparameter Experiments", "", "Environment: `ALE/Qbert-v5`. All results must come from actual runs. No rewards are pre-filled.", "", "| " + " | ".join(headers) + " |", "| " + " | ".join("---" for _ in headers) + " |"]
+    lines = ["# Ivan — Task 3: Individual Hyperparameter Experiments", "", "Environment: `ALE/Qbert-v5`. All results must come from actual runs. No rewards are pre-filled.", "", "| " + " | ".join(headers) + " |", "| " + " | ".join("---" for _ in headers) + " |"]
     for spec in specs:
         s = summary_for(spec["experiment_id"])
         if s and s["last_10_episode_mean_reward"] is not None:
@@ -59,7 +59,7 @@ def write_table(specs):
         lines += [f"Current highest training reward: `{best['experiment_id']}` ({best['last_10_episode_mean_reward']:.2f}).", f"Current lowest training reward: `{worst['experiment_id']}` ({worst['last_10_episode_mean_reward']:.2f}).", "", "These are training diagnostics, not controlled evaluation results.", ""]
     else:
         lines += ["Best and worst configurations: pending real experiment results and evaluation.", ""]
-    lines += ["## Reproducibility", "", "Every experiment saves its exact configuration to `results/kalisa/TASK3_EXPxx/summary.json`, logs episodes to `episodes.csv`, optimization updates to `training_updates.csv`, plots to `plots/kalisa/`, and final weights to `models/kalisa/`.", ""]
+    lines += ["## Reproducibility", "", "Every experiment saves its exact configuration to `results/ivan/TASK3_EXPxx/summary.json`, logs episodes to `episodes.csv`, optimization updates to `training_updates.csv`, plots to `plots/ivan/`, and final weights to `models/ivan/`.", ""]
     TABLE.write_text("\n".join(lines), encoding="utf-8")
 
 
@@ -80,7 +80,7 @@ def main():
     elif args.export_best:
         if args.export_best not in {s["experiment_id"] for s in specs}:
             parser.error("Unknown experiment ID")
-        source = ROOT / "models" / "kalisa" / f"{args.export_best}.pth"
+        source = ROOT / "models" / "ivan" / f"{args.export_best}.pth"
         if not source.is_file():
             parser.error(f"Model does not exist: {source}. Run training first.")
         destination = ROOT / "dqn_model.pth"

@@ -1,4 +1,4 @@
-# Kalisa — Task 3: Training and Hyperparameter Experiments
+# Ivan — Task 3: Training and Hyperparameter Experiments
 
 This contribution builds on the shared `environment.py`, `dqn.py`, `replay_buffer.py`, and `dqn_agent.py` without changing their interfaces.
 
@@ -20,11 +20,11 @@ uv run python run_experiments.py --list
 uv run python train.py --experiment-id TASK3_SMOKE --max-steps 100 --learning-starts 8 --replay-capacity 64 --batch-size 4 --train-frequency 4 --target-update-frequency 20 --checkpoint-frequency 100 --log-frequency 20 --device cpu
 ```
 
-Check `results/kalisa/TASK3_SMOKE/summary.json` for `optimizer_updates > 0`. This is a pipeline check, **not evidence that the agent has learned to play**.
+Check `results/ivan/TASK3_SMOKE/summary.json` for `optimizer_updates > 0`. This is a pipeline check, **not evidence that the agent has learned to play**.
 
 ## Ten experiments
 
-The six required hyperparameters are recorded in `kalisa_experiments.json`. Each experiment starts with a new DQN model, optimizer, buffer, and seeded environment. The default training budget is 100,000 agent decisions per experiment. For stronger performance, choose an equal, larger budget for all ten runs.
+The six required hyperparameters are recorded in `ivan_experiments.json`. Each experiment starts with a new DQN model, optimizer, buffer, and seeded environment. The default training budget is 100,000 agent decisions per experiment. For stronger performance, choose an equal, larger budget for all ten runs.
 
 ```bash
 uv run python run_experiments.py --experiment TASK3_EXP01
@@ -36,17 +36,17 @@ The runner **skips previously completed experiment IDs** to avoid deleting resul
 
 For each experiment, the code produces:
 
-- `models/kalisa/TASK3_EXPxx.pth`: model weights.
-- `results/kalisa/TASK3_EXPxx/episodes.csv`: rewards, episode lengths, epsilon, steps and mean loss.
-- `results/kalisa/TASK3_EXPxx/training_updates.csv`: optimization loss and mean predicted Q.
-- `results/kalisa/TASK3_EXPxx/summary.json`: exact configuration and numerical training summary.
-- `plots/kalisa/TASK3_EXPxx.png`: reward, episode length and loss.
-- `KalisaHyperparameter_experiment_results.md`: numerical results table, plus room for personal interpretation.
+- `models/ivan/TASK3_EXPxx.pth`: model weights.
+- `results/ivan/TASK3_EXPxx/episodes.csv`: rewards, episode lengths, epsilon, steps and mean loss.
+- `results/ivan/TASK3_EXPxx/training_updates.csv`: optimization loss and mean predicted Q.
+- `results/ivan/TASK3_EXPxx/summary.json`: exact configuration and numerical training summary.
+- `plots/ivan/TASK3_EXPxx.png`: reward, episode length and loss.
+- `IvanHyperparameter_experiment_results.md`: numerical results table, plus room for personal interpretation.
 
 ## Evaluate and demonstrate
 
 ```bash
-uv run python play.py --model models/kalisa/TASK3_EXP01.pth --episodes 5 --no-render
+uv run python play.py --model models/ivan/TASK3_EXP01.pth --episodes 5 --no-render
 uv run python run_experiments.py --export-best TASK3_EXP01
 uv run python play.py --model dqn_model.pth
 ```

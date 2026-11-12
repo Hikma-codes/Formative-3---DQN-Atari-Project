@@ -1,4 +1,4 @@
-# Kalisa — Task 3: Individual Hyperparameter Experiments
+# Ivan — Task 3: Individual Hyperparameter Experiments
 
 Environment: `ALE/Qbert-v5`. All results must come from actual runs. No rewards are pre-filled.
 
@@ -26,4 +26,4 @@ These are training diagnostics, not controlled evaluation results.
 
 ## Reproducibility
 
-Every experiment saves its exact configuration to `results/kalisa/TASK3_EXPxx/summary.json`, logs episodes to `episodes.csv`, optimization updates to `training_updates.csv`, plots to `plots/kalisa/`, and final weights to `models/kalisa/`.
+Every experiment saves its exact configuration to `results/ivan/TASK3_EXPxx/summary.json`, logs episodes to `episodes.csv`, optimization updates to `training_updates.csv`, plots to `plots/ivan/`, and final weights to `models/ivan/`.
