@@ -27,3 +27,22 @@ These are training diagnostics, not controlled evaluation results.
 ## Reproducibility
 
 Every experiment saves its exact configuration to `results/ivan/TASK3_EXPxx/summary.json`, logs episodes to `episodes.csv`, optimization updates to `training_updates.csv`, plots to `plots/ivan/`, and final weights to `models/ivan/`.
+
+## Greedy evaluation
+
+Each saved model played the same 10 seeded episodes (seeds 1000-1009) with greedy actions (epsilon = 0).
+
+| Rank | Experiment | Mean reward | Std | Min | Max |
+| --- | --- | --- | --- | --- | --- |
+| 1 | TASK3_EXP04 | 485.0 | 179.3 | 125 | 675 |
+| 2 | TASK3_EXP10 | 327.5 | 73.7 | 125 | 400 |
+| 3 | TASK3_EXP01 | 300.0 | 123.0 | 200 | 625 |
+| 4 | TASK3_EXP06 | 292.5 | 38.8 | 200 | 350 |
+| 5 | TASK3_EXP05 | 275.0 | 150.0 | 175 | 600 |
+| 6 | TASK3_EXP03 | 270.0 | 56.8 | 200 | 400 |
+| 7 | TASK3_EXP08 | 210.0 | 56.1 | 175 | 325 |
+| 8 | TASK3_EXP09 | 172.5 | 72.8 | 75 | 275 |
+| 9 | TASK3_EXP02 | 145.0 | 95.4 | 75 | 425 |
+| 10 | TASK3_EXP07 | 142.5 | 29.7 | 125 | 200 |
+
+Highest greedy-evaluation reward: `TASK3_EXP04` (485.0). Lowest: `TASK3_EXP07` (142.5).
