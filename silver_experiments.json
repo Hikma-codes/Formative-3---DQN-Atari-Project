@@ -1,0 +1,102 @@
+[
+  {
+    "experiment_id": "SILVER_EXP01",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP02",
+    "member": "silver",
+    "learning_rate": 0.0005,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP03",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.9,
+    "batch_size": 32,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP04",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.999,
+    "batch_size": 32,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP05",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 256,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP06",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.01,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP07",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 25000
+  },
+  {
+    "experiment_id": "SILVER_EXP08",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "epsilon_start": 0.5,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP09",
+    "member": "silver",
+    "learning_rate": 0.0001,
+    "gamma": 0.97,
+    "batch_size": 256,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  },
+  {
+    "experiment_id": "SILVER_EXP10",
+    "member": "silver",
+    "learning_rate": 0.0002,
+    "gamma": 0.97,
+    "batch_size": 256,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.1,
+    "epsilon_decay": 100000
+  }
+]
