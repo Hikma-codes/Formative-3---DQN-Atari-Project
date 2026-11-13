@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parent
 EXPERIMENTS = ROOT / "ivan_experiments.json"
 RESULTS = ROOT / "results" / "ivan"
 TABLE = ROOT / "IvanHyperparameter_experiment_results.md"
+OBSERVATIONS = ROOT / "ivan_observations.json"
+EVAL_MARK = "## Greedy evaluation"
 
 
 def load_experiments():
@@ -36,6 +38,8 @@ def summary_for(exp_id):
 
 
 def write_table(specs):
+    notes = json.loads(OBSERVATIONS.read_text(encoding="utf-8")) if OBSERVATIONS.exists() else {}
+    old_text = TABLE.read_text(encoding="utf-8") if TABLE.exists() else ""
     headers = ["Experiment", "Learning rate", "Gamma", "Batch size", "Epsilon start", "Epsilon end", "Epsilon decay (steps)", "Observed behaviour"]
     lines = ["# Ivan — Task 3: Individual Hyperparameter Experiments", "", "Environment: `ALE/Qbert-v5`. All results must come from actual runs. No rewards are pre-filled.", "", "| " + " | ".join(headers) + " |", "| " + " | ".join("---" for _ in headers) + " |"]
     for spec in specs:
@@ -44,7 +48,8 @@ def write_table(specs):
             obs = (f"Completed {s['completed_episodes']} episodes in {s['total_steps']} steps; "
                    f"mean reward (last 10): {s['last_10_episode_mean_reward']:.2f}; "
                    f"mean episode length: {s['last_10_episode_mean_length']:.1f}; "
-                   f"optimizer updates: {s['optimizer_updates']}. Add qualitative observations after reviewing gameplay.")
+                   f"optimizer updates: {s['optimizer_updates']}. "
+                   + notes.get("experiments", {}).get(spec["experiment_id"], "Add qualitative observations after reviewing gameplay."))
         elif s:
             obs = f"Run finished ({s['total_steps']} steps), but no episode completed; more training needed."
         else:
@@ -59,8 +64,13 @@ def write_table(specs):
         lines += [f"Current highest training reward: `{best['experiment_id']}` ({best['last_10_episode_mean_reward']:.2f}).", f"Current lowest training reward: `{worst['experiment_id']}` ({worst['last_10_episode_mean_reward']:.2f}).", "", "These are training diagnostics, not controlled evaluation results.", ""]
     else:
         lines += ["Best and worst configurations: pending real experiment results and evaluation.", ""]
+    if notes.get("interpretation"):
+        lines += ["### Written interpretation", "", notes["interpretation"], ""]
     lines += ["## Reproducibility", "", "Every experiment saves its exact configuration to `results/ivan/TASK3_EXPxx/summary.json`, logs episodes to `episodes.csv`, optimization updates to `training_updates.csv`, plots to `plots/ivan/`, and final weights to `models/ivan/`.", ""]
-    TABLE.write_text("\n".join(lines), encoding="utf-8")
+    text = "\n".join(lines)
+    if EVAL_MARK in old_text:  # keep the greedy evaluation section written by evaluate_experiments.py
+        text = text.rstrip() + "\n\n" + old_text[old_text.index(EVAL_MARK):]
+    TABLE.write_text(text, encoding="utf-8")
 
 
 def main():
