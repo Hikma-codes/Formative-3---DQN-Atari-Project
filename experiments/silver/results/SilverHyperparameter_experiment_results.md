@@ -69,10 +69,10 @@ The ranking of the top two and bottom two models is unchanged. With more episode
 
 ## Plots
 
-- `plots/silver/silver_learning_curves.png`: training reward of each experiment against the baseline.
-- `plots/silver/silver_training_vs_evaluation.png`: training and evaluation reward by experiment.
-- `plots/silver/silver_extended_evaluation.png`: 60-episode evaluation reward by experiment.
-- `plots/silver/SILVER_EXPxx.png`: reward, episode length and loss for each experiment.
+- `experiments/silver/plots/silver_learning_curves.png`: training reward of each experiment against the baseline.
+- `experiments/silver/plots/silver_training_vs_evaluation.png`: training and evaluation reward by experiment.
+- `experiments/silver/plots/silver_extended_evaluation.png`: 60-episode evaluation reward by experiment.
+- `experiments/silver/plots/SILVER_EXPxx.png`: reward, episode length and loss for each experiment.
 
 ## Interpretation
 
@@ -115,4 +115,15 @@ It ranked first on the group's ten-episode protocol (592.5) and on the 60-episod
 
 ## Reproducibility
 
-Each experiment's exact configuration is in `results/silver/SILVER_EXPxx/summary.json`, with episode logs in `episodes.csv`, update logs in `training_updates.csv` and final weights in `models/silver/`. The ten configurations are in `silver_experiments.json`. The extended evaluation is in `results/silver/silver_extended_evaluation_episode_results.csv` and `silver_extended_evaluation_summary.csv`, and can be reproduced by setting `EVAL_EPISODES = 60` in section 10 of my Colab notebook.
+All files are under `experiments/silver/`:
+
+- `configs/silver_experiments.json`: the ten configurations.
+- `models/SILVER_EXPxx.pth`: the final weights of each experiment.
+- `results/individual_experiments/SILVER_EXPxx/`: the exact configuration (`summary.json`), episode log (`episodes.csv`) and update log (`training_updates.csv`) of each experiment.
+- `results/silver_*.csv`: training results, evaluation results and the random agent reference.
+
+Any evaluation result can be reproduced with the group's `play.py`, which uses the same greedy protocol and seeds. For example, the 60-episode result of the final model:
+
+```
+uv run python play.py --model experiments/silver/models/SILVER_EXP10.pth --episodes 60 --no-render
+```
