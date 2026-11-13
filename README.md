@@ -1,182 +1,95 @@
-# Formative 3 – DQN Atari Project
+# Ivan's DQN Hyperparameter Experiments (Task 3)
 
-We taught a computer program to play the Atari game **Q\*bert** using a Deep Q-Network (DQN). The program starts out knowing nothing. It plays the game again and again, sees which moves earned points, and slowly gets better.
-
-The project is written in Python with PyTorch and Gymnasium. Packages are managed with **uv** only (no pip).
+Ten DQN experiments on the Atari game **Q\*bert** (`ALE/Qbert-v5`). Each experiment trains a new agent for **100,000 steps** with the same seed (42), the same network and the same game. Each one changes **one** hyperparameter from the baseline (EXP01), so we can see what that change does.
 
 ---
 
-## 1. Project introduction
+## 1. Hyperparameter experiments
 
-### Group members
+### Settings
 
-| Member | Part of the project |
-| --- | --- |
-| Hikma Hamza | Game environment, image preprocessing and the neural network (CNN) |
-| Silver (N-SilverJr) | Replay buffer, epsilon-greedy choice of moves, Bellman update, loss and target network |
-| Ivan Kalisa | Training pipeline, logging, saving models, and the Task 3 experiments |
-| Yvette Uwimpaye | Evaluation, gameplay demonstration, plots and documentation |
+| Experiment | Learning rate | Gamma | Batch size | Epsilon start | Epsilon end | Epsilon decay (steps) | What changed |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| TASK3_EXP01 | 0.0001 | 0.99 | 32 | 1.0 | 0.1 | 100,000 | Baseline |
+| TASK3_EXP02 | 0.00005 | 0.99 | 32 | 1.0 | 0.1 | 100,000 | Smaller learning rate |
+| TASK3_EXP03 | 0.00025 | 0.99 | 32 | 1.0 | 0.1 | 100,000 | Bigger learning rate |
+| TASK3_EXP04 | 0.0001 | **0.95** | 32 | 1.0 | 0.1 | 100,000 | Smaller gamma |
+| TASK3_EXP05 | 0.0001 | **0.995** | 32 | 1.0 | 0.1 | 100,000 | Bigger gamma |
+| TASK3_EXP06 | 0.0001 | 0.99 | **64** | 1.0 | 0.1 | 100,000 | Bigger batch |
+| TASK3_EXP07 | 0.0001 | 0.99 | **16** | 1.0 | 0.1 | 100,000 | Smaller batch |
+| TASK3_EXP08 | 0.0001 | 0.99 | 32 | **0.9** | 0.1 | 100,000 | Lower epsilon start |
+| TASK3_EXP09 | 0.0001 | 0.99 | 32 | 1.0 | **0.05** | 100,000 | Lower epsilon end |
+| TASK3_EXP10 | 0.0001 | 0.99 | 32 | 1.0 | 0.1 | **50,000** | Faster epsilon decay |
 
-### Selected Atari environment
+The settings are stored in [`ivan_experiments.json`](ivan_experiments.json).
 
-**`ALE/Qbert-v5`**. In Q\*bert you control a character that jumps around a pyramid of cubes. Landing on a cube changes its colour, and you score points when you change them all while dodging enemies. The game has **6 possible actions** (for example: do nothing, jump in each of the four diagonal directions, and fire).
+### Results
 
-The game images are made smaller before the network sees them:
-- turned to grey (colour is not needed),
-- shrunk to 84 × 84 pixels,
-- the last **4 frames** are stacked together, so the network can see which way things are moving.
+"Training" is the mean reward of the last 10 training episodes (noisy, because the agent still makes some random moves). "Evaluation" is the mean reward over the same 10 games (seeds 1000–1009) with no random moves, so it is the fairer comparison.
 
-So each input to the network is a block of shape `4 × 84 × 84`.
+| Rank (by evaluation) | Experiment | Training reward | Evaluation reward | Evaluation std |
+| --- | --- | --- | --- | --- |
+| 1 | TASK3_EXP04 | 302.5 | **485.0** | 179.3 |
+| 2 | TASK3_EXP10 | 325.0 | 327.5 | 73.7 |
+| 3 | TASK3_EXP01 | 207.5 | 300.0 | 123.0 |
+| 4 | TASK3_EXP06 | 355.0 | 292.5 | 38.8 |
+| 5 | TASK3_EXP05 | 285.0 | 275.0 | 150.0 |
+| 6 | TASK3_EXP03 | 315.0 | 270.0 | 56.8 |
+| 7 | TASK3_EXP08 | 295.0 | 210.0 | 56.1 |
+| 8 | TASK3_EXP09 | 322.5 | 172.5 | 72.8 |
+| 9 | TASK3_EXP02 | 377.5 | 145.0 | 95.4 |
+| 10 | TASK3_EXP07 | 292.5 | 142.5 | 29.7 |
+
+**In short:** EXP04 (gamma 0.95) scored highest in evaluation. Each setting was trained once for 100,000 steps and the scores change a lot from game to game, so only EXP04's lead is large enough to take seriously. Written notes for every experiment are in [`IvanHyperparameter_experiment_results.md`](IvanHyperparameter_experiment_results.md).
+
+### Plots
+
+- One training plot per experiment (reward, episode length, loss): `plots/ivan/TASK3_EXPxx.png`
+- Plots comparing all ten experiments: `plots/ivan/ivan_training_rewards_comparison.png`, `ivan_evaluation_rewards_comparison.png`, `ivan_training_vs_evaluation.png` and `ivan_training_curves.png`
 
 ---
 
-## 2. DQN architecture
+## 2. Folder structure
 
-### The network
-
-The network looks at the 4 stacked frames and gives back **6 numbers**, one for each action. Each number is a guess of how good that action is (called the *Q-value*). The agent normally picks the action with the biggest number.
-
-```mermaid
-flowchart LR
-    A["Input<br/>4 x 84 x 84"] --> B["Conv 1<br/>32 filters, 8x8, stride 4<br/>+ ReLU"]
-    B --> C["Conv 2<br/>64 filters, 4x4, stride 2<br/>+ ReLU"]
-    C --> D["Conv 3<br/>64 filters, 3x3, stride 1<br/>+ ReLU"]
-    D --> E["Flatten<br/>3136 values"]
-    E --> F["Dense<br/>512 units + ReLU"]
-    F --> G["Output<br/>6 Q-values"]
+```
+.
+├── train.py                      training loop
+├── play.py                       watch a trained model play
+├── run_experiments.py            runs the ten experiments, builds the results table
+├── evaluate_experiments.py       tests all ten saved models on the same games
+├── record_demo.py                records the gameplay video and GIF
+├── dqn.py, dqn_agent.py,         shared network, learning logic, memory and game setup
+│   replay_buffer.py, environment.py
+├── ivan_experiments.json         the ten experiment settings
+├── ivan_observations.json        written notes for each experiment
+├── IvanHyperparameter_experiment_results.md   results table and interpretation
+├── Ivan_DQN_Atari_Experiments.ipynb           Colab / Jupyter notebook of the whole workflow
+├── INSTRUCTIONS.md, PROJECT_GUIDE.md          run instructions and team rules
+├── models/ivan/                  final trained model for each experiment (10 files)
+├── plots/ivan/                   training plots and comparison plots
+├── results/ivan/
+│   ├── TASK3_EXPxx/              episodes.csv, training_updates.csv, summary.json
+│   ├── evaluation.json           evaluation scores for all ten models
+│   └── ivan_*.csv                combined training / evaluation tables
+├── demo/                         gameplay video (mp4) and GIF of the best agent
+└── pyproject.toml, uv.lock       dependencies (managed with uv)
 ```
 
-| Layer | Output size |
-| --- | --- |
-| Input | 4 × 84 × 84 |
-| Conv 1 (32 filters, 8×8, stride 4) | 32 × 20 × 20 |
-| Conv 2 (64 filters, 4×4, stride 2) | 64 × 9 × 9 |
-| Conv 3 (64 filters, 3×3, stride 1) | 64 × 7 × 7 |
-| Flatten | 3136 |
-| Dense + ReLU | 512 |
-| Output | 6 |
+---
 
-The network has about **1.69 million** numbers to learn. The code is in `dqn.py`.
+## 3. Model checkpoints
 
-### Two copies of the network
-
-During training we keep two copies:
-- the **online network**, which is the one being trained at every update;
-- the **target network**, a frozen copy that is refreshed every 2,000 steps. It gives steadier goals to aim for, so learning does not chase its own tail.
-
-### The other parts
-
-| Part | What it does | File |
+| Kind | Where | In GitHub? |
 | --- | --- | --- |
-| Replay buffer | Remembers the last 20,000 moves. Training uses random samples from it, which stops the agent from learning only from what just happened. | `replay_buffer.py` |
-| Epsilon-greedy | Sometimes picks a random move (to explore), sometimes the best-looking one (to use what it learned). | `dqn_agent.py` |
-| Bellman update | Builds the goal for each move: reward now + `gamma` × best value expected next. | `dqn_agent.py` |
-| Loss | Huber loss compares what the network guessed with that goal. | `dqn_agent.py` |
+| **Final models** (weights after 100,000 steps) | `models/ivan/TASK3_EXP01.pth` to `TASK3_EXP10.pth` (about 6.7 MB each) | Yes |
+| **Intermediate checkpoints** (saved every 10,000 steps) | `results/ivan/TASK3_EXPxx/checkpoint_step_10000.pth` to `checkpoint_step_100000.pth` (100 files, about 690 MB in total) | **No**, they are too large |
 
----
+The intermediate checkpoints stay on my computer and are not uploaded. Anyone can recreate them by running the experiment again with the same settings, because `train.py` saves a checkpoint every 10,000 steps.
 
-## 3. How training works
-
-In plain steps, this is what `train.py` does:
-
-1. **Start the game** and let the agent pick moves. At first almost every move is random (`epsilon = 1.0`).
-2. **Save each move** (what it saw, what it did, the reward, what happened next) in the replay buffer.
-3. **After 2,000 steps** of collecting, start learning. Every 4 game steps, take a random batch of 32 saved moves and nudge the network so its guesses move closer to the Bellman goal.
-4. **Slowly make it less random.** Epsilon goes down in a straight line from 1.0 to 0.1 over the first 100,000 steps, so the agent relies more and more on what it has learned.
-5. **Every 2,000 steps**, copy the online network into the target network.
-6. **Log everything** (rewards, episode lengths, loss) to CSV files, draw a plot, and save the final model.
-
-Rewards are clipped to between −1 and 1, as in the original DQN paper, so big scores do not make training unstable.
-
-### Our ten experiments (Task 3)
-
-All ten experiments use the same game, the same network and the same budget of **100,000 steps**. Each one changes **one hyperparameter** from the baseline (EXP01), so we can see what that change does.
-
-| Experiment | What changed from the baseline |
-| --- | --- |
-| EXP01 | Baseline: learning rate 1e-4, gamma 0.99, batch 32, epsilon 1.0 → 0.1 over 100,000 steps |
-| EXP02 | Learning rate 5e-5 (smaller) |
-| EXP03 | Learning rate 2.5e-4 (bigger) |
-| EXP04 | Gamma 0.95 (cares less about the far future) |
-| EXP05 | Gamma 0.995 (cares more about the far future) |
-| EXP06 | Batch size 64 |
-| EXP07 | Batch size 16 |
-| EXP08 | Epsilon start 0.9 |
-| EXP09 | Epsilon end 0.05 |
-| EXP10 | Epsilon decay over 50,000 steps (explores for less time) |
-
-The full numbers are in [`IvanHyperparameter_experiment_results.md`](IvanHyperparameter_experiment_results.md).
-
-**Result in short:** when we let every saved model play the same 10 games using only its best move (no randomness), **EXP04 (gamma 0.95)** scored highest with an average of about 485 points. Training rewards alone were noisy and gave a different order, so we trust the evaluation more. Even so, with only 100,000 steps the agent is still an early learner, and the scores vary a lot from game to game.
-
----
-
-## 4. Gameplay demonstration
-
-Here is our best agent (**EXP04**, gamma 0.95) playing one full game with no random moves. This game ended with a score of **675**.
-
-![Best agent playing Q*bert](demo/ivan_best_agent_EXP04.gif)
-
-The same game as a video (about 20 seconds): [`demo/ivan_best_agent_EXP04.mp4`](demo/ivan_best_agent_EXP04.mp4). If your browser will not play it, download the file and open it with any video player.
-
-How the clip was made: the agent played 10 games with the same seeds as our evaluation, and `record_demo.py` saved the game with the highest score. It is not a hand-picked or edited clip, but it is the best of 10, so it looks better than the average game (the average was about 485).
-
-```bash
-uv run python record_demo.py        # records the video and GIF again
-```
-
-To watch a trained model play yourself (a game window opens):
+To use a saved final model:
 
 ```bash
 uv run python play.py --model models/ivan/TASK3_EXP04.pth --episodes 3
 ```
 
-To run without the window and just print the scores:
-
-```bash
-uv run python play.py --model models/ivan/TASK3_EXP04.pth --episodes 5 --no-render
-```
-
-The agent always picks its best-looking action here (epsilon = 0).
-
----
-
-## 5. How to run the project
-
-Install [uv](https://docs.astral.sh/uv/), then from the project folder:
-
-```bash
-uv sync                                          # install everything
-uv run python test_dqn.py                        # quick tests
-uv run python run_experiments.py --list          # show the 10 experiments
-uv run python run_experiments.py --experiment TASK3_EXP01   # run one
-uv run python run_experiments.py --all           # run all ten (takes hours)
-uv run python evaluate_experiments.py --episodes 10   # compare saved models fairly
-```
-
-Finished experiments are skipped, so running a command twice will not erase old results. See `INSTRUCTIONS.md` for more detail.
-
----
-
-## 6. What is in this repository
-
-```
-train.py                  training loop
-play.py                   watch / test a trained model
-run_experiments.py        runs the ten experiments and builds the results table
-evaluate_experiments.py   fair comparison of the ten saved models
-record_demo.py            records the gameplay video and GIF
-demo/                     gameplay video (mp4) and GIF of the best agent
-dqn.py                    the neural network
-dqn_agent.py              epsilon-greedy, Bellman update, loss, target network
-replay_buffer.py          memory of past moves
-environment.py            Q*bert setup and image preprocessing
-models/ivan/              saved trained models, one per experiment
-plots/ivan/               training plots, one per experiment
-results/ivan/             logs (CSV) and summaries (JSON) for every run
-IvanHyperparameter_experiment_results.md   results table
-ivan_observations.json    written notes per experiment (used to build the results table)
-PROJECT_GUIDE.md          shared team rules
-```
-
-The `checkpoint_step_*.pth` files that training saves along the way are not uploaded because they are large. The final models are.
+`TASK3_EXP04.pth` is the best model by evaluation.
