@@ -1,0 +1,102 @@
+[
+    {
+        "experiment_id": "HIKMA_EXP01",
+        "member": "hikma",
+        "learning_rate": 0.000075,
+        "gamma": 0.99,
+        "batch_size": 32,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP02",
+        "member": "hikma",
+        "learning_rate": 0.0002,
+        "gamma": 0.99,
+        "batch_size": 32,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP03",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.97,
+        "batch_size": 32,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP04",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.985,
+        "batch_size": 32,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP05",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.99,
+        "batch_size": 48,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP06",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.99,
+        "batch_size": 128,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP07",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.99,
+        "batch_size": 32,
+        "epsilon_start": 0.8,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP08",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.99,
+        "batch_size": 32,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.15,
+        "epsilon_decay": 100000
+    },
+    {
+        "experiment_id": "HIKMA_EXP09",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.99,
+        "batch_size": 32,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 75000
+    },
+    {
+        "experiment_id": "HIKMA_EXP10",
+        "member": "hikma",
+        "learning_rate": 0.0001,
+        "gamma": 0.99,
+        "batch_size": 32,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.1,
+        "epsilon_decay": 150000
+    }
+]
