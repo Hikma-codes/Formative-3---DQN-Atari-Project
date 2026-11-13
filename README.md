@@ -175,6 +175,7 @@ models/ivan/              saved trained models, one per experiment
 plots/ivan/               training plots, one per experiment
 results/ivan/             logs (CSV) and summaries (JSON) for every run
 IvanHyperparameter_experiment_results.md   results table
+ivan_observations.json    written notes per experiment (used to build the results table)
 PROJECT_GUIDE.md          shared team rules
 ```
 
