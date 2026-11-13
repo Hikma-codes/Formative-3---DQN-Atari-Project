@@ -113,7 +113,19 @@ The full numbers are in [`IvanHyperparameter_experiment_results.md`](IvanHyperpa
 
 ## 4. Gameplay demonstration
 
-To watch a trained model play (a game window opens):
+Here is our best agent (**EXP04**, gamma 0.95) playing one full game with no random moves. This game ended with a score of **675**.
+
+![Best agent playing Q*bert](demo/ivan_best_agent_EXP04.gif)
+
+The same game as a video (about 20 seconds): [`demo/ivan_best_agent_EXP04.mp4`](demo/ivan_best_agent_EXP04.mp4). If your browser will not play it, download the file and open it with any video player.
+
+How the clip was made: the agent played 10 games with the same seeds as our evaluation, and `record_demo.py` saved the game with the highest score. It is not a hand-picked or edited clip, but it is the best of 10, so it looks better than the average game (the average was about 485).
+
+```bash
+uv run python record_demo.py        # records the video and GIF again
+```
+
+To watch a trained model play yourself (a game window opens):
 
 ```bash
 uv run python play.py --model models/ivan/TASK3_EXP04.pth --episodes 3
@@ -153,6 +165,8 @@ train.py                  training loop
 play.py                   watch / test a trained model
 run_experiments.py        runs the ten experiments and builds the results table
 evaluate_experiments.py   fair comparison of the ten saved models
+record_demo.py            records the gameplay video and GIF
+demo/                     gameplay video (mp4) and GIF of the best agent
 dqn.py                    the neural network
 dqn_agent.py              epsilon-greedy, Bellman update, loss, target network
 replay_buffer.py          memory of past moves
