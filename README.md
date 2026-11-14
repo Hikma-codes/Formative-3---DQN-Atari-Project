@@ -84,7 +84,7 @@ These results come from individual experiments. Evaluation seeds and protocols w
 
 The diagram below illustrates how our DQN agent processes game observations and produces action-value estimates.
 
-![DQN Network Architecture](dqn_architecture.svg)
+![DQN Network Architecture](https://raw.githubusercontent.com/Hikma-codes/Formative-3---DQN-Atari-Project/main/dqn_architecture.svg)
 
 The network receives four stacked grayscale frames (84 × 84), processes them through three convolutional layers, and passes the extracted features through a fully connected layer with 512 neurons. The output layer produces six Q-values, which the agent uses to select its next action.
 
