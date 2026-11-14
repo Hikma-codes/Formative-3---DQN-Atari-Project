@@ -1,95 +1,191 @@
-# Ivan's DQN Hyperparameter Experiments (Task 3)
+# Deep Q-Learning: Teaching an AI Agent to Play Q*bert
 
-Ten DQN experiments on the Atari game **Q\*bert** (`ALE/Qbert-v5`). Each experiment trains a new agent for **100,000 steps** with the same seed (42), the same network and the same game. Each one changes **one** hyperparameter from the baseline (EXP01), so we can see what that change does.
+## About the Project
 
----
+This project was completed as part of the Reinforcement Learning course at the African Leadership University (ALU).
 
-## 1. Hyperparameter experiments
+Our team implemented a **Deep Q-Network (DQN)** agent to learn how to play the Atari game **Q*bert**. Instead of being given instructions on how to play, the agent learns through trial and error, using rewards from the game to improve its decisions over time.
 
-### Settings
+The project allowed us to explore how reinforcement learning works in practice, from processing game images and building a neural network to training, evaluating and comparing different experiments.
 
-| Experiment | Learning rate | Gamma | Batch size | Epsilon start | Epsilon end | Epsilon decay (steps) | What changed |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| TASK3_EXP01 | 0.0001 | 0.99 | 32 | 1.0 | 0.1 | 100,000 | Baseline |
-| TASK3_EXP02 | 0.00005 | 0.99 | 32 | 1.0 | 0.1 | 100,000 | Smaller learning rate |
-| TASK3_EXP03 | 0.00025 | 0.99 | 32 | 1.0 | 0.1 | 100,000 | Bigger learning rate |
-| TASK3_EXP04 | 0.0001 | **0.95** | 32 | 1.0 | 0.1 | 100,000 | Smaller gamma |
-| TASK3_EXP05 | 0.0001 | **0.995** | 32 | 1.0 | 0.1 | 100,000 | Bigger gamma |
-| TASK3_EXP06 | 0.0001 | 0.99 | **64** | 1.0 | 0.1 | 100,000 | Bigger batch |
-| TASK3_EXP07 | 0.0001 | 0.99 | **16** | 1.0 | 0.1 | 100,000 | Smaller batch |
-| TASK3_EXP08 | 0.0001 | 0.99 | 32 | **0.9** | 0.1 | 100,000 | Lower epsilon start |
-| TASK3_EXP09 | 0.0001 | 0.99 | 32 | 1.0 | **0.05** | 100,000 | Lower epsilon end |
-| TASK3_EXP10 | 0.0001 | 0.99 | 32 | 1.0 | 0.1 | **50,000** | Faster epsilon decay |
+## Our Team
 
-The settings are stored in [`ivan_experiments.json`](ivan_experiments.json).
+- Hikma Hamza
+- Nshuti Shalom Silver Jr
+- Ivan Manzi
+- Yvette Uwimpaye
 
-### Results
+## The Game: Q*bert
 
-"Training" is the mean reward of the last 10 training episodes (noisy, because the agent still makes some random moves). "Evaluation" is the mean reward over the same 10 games (seeds 1000–1009) with no random moves, so it is the fairer comparison.
+Q*bert is an Atari arcade game in which the player controls a character that jumps across a pyramid of cubes. The objective is to change the colours of the cubes while avoiding enemies and obstacles.
 
-| Rank (by evaluation) | Experiment | Training reward | Evaluation reward | Evaluation std |
-| --- | --- | --- | --- | --- |
-| 1 | TASK3_EXP04 | 302.5 | **485.0** | 179.3 |
-| 2 | TASK3_EXP10 | 325.0 | 327.5 | 73.7 |
-| 3 | TASK3_EXP01 | 207.5 | 300.0 | 123.0 |
-| 4 | TASK3_EXP06 | 355.0 | 292.5 | 38.8 |
-| 5 | TASK3_EXP05 | 285.0 | 275.0 | 150.0 |
-| 6 | TASK3_EXP03 | 315.0 | 270.0 | 56.8 |
-| 7 | TASK3_EXP08 | 295.0 | 210.0 | 56.1 |
-| 8 | TASK3_EXP09 | 322.5 | 172.5 | 72.8 |
-| 9 | TASK3_EXP02 | 377.5 | 145.0 | 95.4 |
-| 10 | TASK3_EXP07 | 292.5 | 142.5 | 29.7 |
+Our goal was to build an agent that could learn to play the game by interacting with the environment and maximising its rewards.
 
-**In short:** EXP04 (gamma 0.95) scored highest in evaluation. Each setting was trained once for 100,000 steps and the scores change a lot from game to game, so only EXP04's lead is large enough to take seriously. Written notes for every experiment are in [`IvanHyperparameter_experiment_results.md`](IvanHyperparameter_experiment_results.md).
+## How Our DQN Agent Works
 
-### Plots
+The agent receives visual observations from the game and uses a Convolutional Neural Network (CNN) to estimate the value of its available actions.
 
-- One training plot per experiment (reward, episode length, loss): `plots/ivan/TASK3_EXPxx.png`
-- Plots comparing all ten experiments: `plots/ivan/ivan_training_rewards_comparison.png`, `ivan_evaluation_rewards_comparison.png`, `ivan_training_vs_evaluation.png` and `ivan_training_curves.png`
+We prepared the game observations by:
 
----
+- Converting frames to grayscale.
+- Resizing frames to 84 × 84 pixels.
+- Stacking four consecutive frames to provide information about movement.
+- Normalising pixel values.
 
-## 2. Folder structure
+The resulting observation has four stacked frames, each measuring 84 × 84 pixels.
 
-```
-.
-├── train.py                      training loop
-├── play.py                       watch a trained model play
-├── run_experiments.py            runs the ten experiments, builds the results table
-├── evaluate_experiments.py       tests all ten saved models on the same games
-├── record_demo.py                records the gameplay video and GIF
-├── dqn.py, dqn_agent.py,         shared network, learning logic, memory and game setup
-│   replay_buffer.py, environment.py
-├── ivan_experiments.json         the ten experiment settings
-├── ivan_observations.json        written notes for each experiment
-├── IvanHyperparameter_experiment_results.md   results table and interpretation
-├── Ivan_DQN_Atari_Experiments.ipynb           Colab / Jupyter notebook of the whole workflow
-├── INSTRUCTIONS.md, PROJECT_GUIDE.md          run instructions and team rules
-├── models/ivan/                  final trained model for each experiment (10 files)
-├── plots/ivan/                   training plots and comparison plots
-├── results/ivan/
-│   ├── TASK3_EXPxx/              episodes.csv, training_updates.csv, summary.json
-│   ├── evaluation.json           evaluation scores for all ten models
-│   └── ivan_*.csv                combined training / evaluation tables
-├── demo/                         gameplay video (mp4) and GIF of the best agent
-└── pyproject.toml, uv.lock       dependencies (managed with uv)
-```
+### Training Process
 
----
+Our implementation uses the following components:
 
-## 3. Model checkpoints
+- **Deep Q-Network:** A CNN that estimates the expected value of available actions.
+- **Epsilon-greedy exploration:** Allows the agent to explore different actions before gradually relying more on what it has learned.
+- **Experience replay:** Stores previous experiences and samples batches for training.
+- **Target network:** Helps stabilise learning by providing separate target Q-value estimates.
+- **Bellman equation:** Used to calculate target values for updating the agent.
+- **Huber loss and Adam optimiser:** Used to train the neural network.
 
-| Kind | Where | In GitHub? |
-| --- | --- | --- |
-| **Final models** (weights after 100,000 steps) | `models/ivan/TASK3_EXP01.pth` to `TASK3_EXP10.pth` (about 6.7 MB each) | Yes |
-| **Intermediate checkpoints** (saved every 10,000 steps) | `results/ivan/TASK3_EXPxx/checkpoint_step_10000.pth` to `checkpoint_step_100000.pth` (100 files, about 690 MB in total) | **No**, they are too large |
+The agent repeatedly observes the game, selects an action, receives a reward, stores the experience and learns from previous experiences.
 
-The intermediate checkpoints stay on my computer and are not uploaded. Anyone can recreate them by running the experiment again with the same settings, because `train.py` saves a checkpoint every 10,000 steps.
+## Our Experiment Results
 
-To use a saved final model:
+Each team member conducted multiple training experiments and evaluated their best-performing model.
+
+| Team member | Best experiment | Evaluation mean reward |
+|---|---|---:|
+| Hikma | HIKMA_EXP02 | 585.0 |
+| Silver | SILVER_EXP10 | 592.5 |
+| Ivan | TASK3_EXP04 | 485.0 |
+| Yvette | YVETTE_EXP10 | 432.5 |
+
+Silver's best model also achieved an average reward of **631.2** over an extended 60-episode evaluation.
+
+These results come from individual experiments. Evaluation seeds and protocols were not identical across all team members, so the figures should not be treated as a strict head-to-head comparison.
+
+### Hikma's Results
+
+![Hikma's evaluation reward comparison](experiments/hikma/plots/evaluation_rewards_comparison.png)
+
+### Silver's Results
+
+![Silver's learning curves](experiments/silver/plots/silver_learning_curves.png)
+
+![Silver's extended evaluation](experiments/silver/plots/silver_extended_evaluation.png)
+
+### Ivan's Results
+
+![Ivan's training curves](plots/ivan/ivan_training_curves.png)
+
+### Yvette's Results
+
+![Yvette's reward curves](plots/yvette/reward_curves_comparison.png)
+
+## Gameplay Demonstrations
+
+This shows our trained agents playing Q*bert.
+
+
+https://youtu.be/w7my37RaIfc
+
+
+## Project Structure
+
+The repository contains the implementation, experiment records, evaluation plots, saved models and gameplay demonstrations.
+
+- `dqn.py` — Defines the neural network architecture.
+- `dqn_agent.py` — Contains the DQN agent and learning logic.
+- `environment.py` — Sets up the Q*bert game environment.
+- `replay_buffer.py` — Stores and samples previous experiences.
+- `train.py` — Runs agent training.
+- `play.py` — Loads a trained model and lets it play.
+- `run_experiments.py` — Runs training experiments.
+- `evaluate_experiments.py` — Evaluates trained models.
+- `plot_results.py` — Generates experiment visualisations.
+- `demo/` — Contains gameplay demonstrations.
+- `experiments/` and `plots/` — Contain experiment results, reports and visualisations.
+- `models/` — Contains saved model checkpoints.
+
+## Getting Started
+
+### Requirements
+
+- Python 3.11
+- [uv](https://docs.astral.sh/uv/) for Python environment and dependency management
+- Git
+
+### 1. Clone the repository
 
 ```bash
-uv run python play.py --model models/ivan/TASK3_EXP04.pth --episodes 3
+git clone https://github.com/Hikma-codes/Formative-3---DQN-Atari-Project.git
 ```
 
-`TASK3_EXP04.pth` is the best model by evaluation.
+### 2. Enter the project directory
+
+```bash
+cd Formative-3---DQN-Atari-Project
+```
+
+### 3. Install the project dependencies
+
+```bash
+uv sync --locked
+```
+
+### 4. View available training and playback options
+
+```bash
+uv run python train.py --help
+```
+
+```bash
+uv run python play.py --help
+```
+
+### 5. Play using a trained model
+
+For example, to watch Silver's best saved agent:
+
+```bash
+uv run python play.py --model experiments/silver/models/SILVER_EXP10.pth
+```
+
+### 6. Run the tests
+
+```bash
+uv run python test_dqn.py
+```
+
+```bash
+uv run python test_environment.py
+```
+
+```bash
+uv run python test_learning.py
+```
+
+## Team Contributions
+
+| Team member | Main contributions |
+|---|---|
+| Hikma Hamza | Game environment, observation preprocessing and CNN architecture |
+| Nshuti Shalom Silver Jr | Experience replay, epsilon-greedy exploration, Bellman updates, loss function and target network |
+| Ivan Manzi | Training pipeline, integration, logging and checkpoint saving |
+| Yvette Uwimpaye | Model evaluation, gameplay demonstrations, visualisations and documentation |
+
+Our experiment configurations, reports and results are available in their respective folders in the repository.
+
+**Task allocation:** [https://docs.google.com/spreadsheets/d/1JFxSb19feI8cuRQ-Ng-Nd_CHib3dQ3BlULCcE5b2Ww8/edit?usp=sharing]
+
+## Model Checkpoints
+
+The repository includes saved checkpoints for the team members' experiments. Some additional checkpoints, including Hikma's submitted models, are stored separately because of their size.
+
+**Additional model checkpoints:** [https://drive.google.com/drive/folders/1jhdbuG9ZWa_W0mLM-DYkZhAdtqh5dgkt?usp=sharing]
+
+## Conclusion
+
+Through this project, we implemented and experimented with Deep Q-Learning in an Atari environment. We explored how an agent can learn from visual observations, rewards and repeated interactions with a game.
+
+Beyond implementing the algorithm, the project gave us practical experience with neural networks, experience replay, exploration strategies, model evaluation and collaborative experimentation.
+
+**The project demonstrates how reinforcement learning can be used to train an agent to learn a game through experience rather than relying on predefined instructions.**
